@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendations</title>
+</head>
+<body>
+    <h1>Movie Recommendations</h1>
+    <form id="recommendation-form">
+        <label for="movie-title">Enter a movie title:</label>
+        <input type="text" id="movie-title" name="movie_title" required>
+        <button type="submit">Get Recommendations</button>
+    </form>
+    <div id="recommendations"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        $('#recommendation-form').submit(function (event) {
+            event.preventDefault();
+
+            // Get the movie title from the input field
+            var movieTitle = $('#movie-title').val();
+
+            // Make an AJAX request to get recommendations
+            $.ajax({
+                type: 'POST',
+                url: '/api/recommend',  // <-- Updated to match FastAPI endpoint
+                data: { 'movie_title': movieTitle, 'user_id': 1 }, // Provide a user_id as required
+                success: function (data) {
+                    var recommendations = data['recommendations'];
+                    var recommendationList = $('<ul>');
+                    for (var i = 0; i < recommendations.length; i++) {
+                        recommendationList.append($('<li>').text(recommendations[i]));
+                    }
+                    $('#recommendations').html(recommendationList);
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>
