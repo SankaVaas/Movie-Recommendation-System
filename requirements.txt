@@ -1,0 +1,6 @@
+fastapi
+numpy
+pandas
+scikit-learn
+fuzzywuzzy
+jinja2s
